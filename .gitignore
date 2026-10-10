@@ -8,3 +8,14 @@ playwright-report/
 *.tsbuildinfo
 .env*
 !.env.example
+
+# Local submission preparation and video production
+/docs/DEMO_SCRIPT.md
+/docs/DEVPOST.md
+/docs/RULES_AND_RESEARCH.md
+/docs/SUBMISSION_CHECKLIST.md
+/docs/demo/
+/scripts/assemble-demo.py
+/scripts/narrate-demo.ps1
+/scripts/record-demo.mjs
+/scripts/verify-demo.py

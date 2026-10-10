@@ -24,10 +24,14 @@ TypeScript (Apache-2.0), Vite and its React plugin (MIT), Vitest (MIT), Playwrig
 
 ## Research and visual inspiration
 
-The full [research record](docs/RULES_AND_RESEARCH.md) credits DataDetective, WebPlotDigitizer, Chart-InforX, Misviz, PlotDigitizer, Image Comparison Slider, DePlot and Observable, plus the linked FastToChart, Dribbble, Powerdrill, InsightX and Datawrapper designs. These informed concepts, limitations and general interaction patterns. No application code, screenshot, illustration, sample chart or dataset from those projects is distributed.
+Technical references: [DataDetective](https://github.com/kumarsparkz/datadetective), [WebPlotDigitizer](https://github.com/automeris-io/WebPlotDigitizer), [Chart-InforX](https://github.com/Cocobaut/Chart-InforX), [Misviz](https://github.com/UKPLab/acl2026-misviz), [PlotDigitizer](https://github.com/yuchung-chuang/PlotDigitizer), [Image Comparison Slider](https://github.com/sneas/img-comparison-slider), [Google DePlot](https://github.com/google-research/google-research/tree/master/deplot) and [Observable Framework examples](https://github.com/observablehq/framework/tree/main/examples).
+
+Visual and interaction references: [FastToChart](https://fasttochart.click/chart-image-to-excel), [Vladislav's dashboard case study](https://dribbble.com/shots/27336953-Data-Dashboard-UX-Redesign-Improving-Insights-Engagement), [Powerdrill](https://powerdrill.ai/features/line-graph-creator), [InsightX by Kamrul Hasan Rifat](https://me.muz.li/kamrulhasanrifat/insightx-analytics-dashboard-ui-design-2), [Datawrapper](https://www.datawrapper.de/academy/how-to-create-your-first-datawrapper-chart), [Observable Framework](https://observablehq.github.io/framework/) and [Crystal by Alisha Aggarwal](https://dribbble.com/shots/26924073-Crystal-SaaS-Analytics-Dashboard-UI-UX-Light-Dark-Mode).
+
+These informed concepts, limitations and general interaction patterns. Their application code, reference artwork and sample charts are not included in ChartTruth. The separately attributed external evaluation metadata is described below.
 
 The ChartTruth wordmark, CSS interface and all three synthetic samples are original project work created during Banana Hacks 2026. Synthetic values are illustrative and are never presented as real-world data.
 
 ## External evaluation additions
 
-A later validation pass uses twenty published Misviz chart images locally. The images are excluded from Git and runtime samples. The attributed metadata subset and derived observations under `docs/evaluation/` use CC-BY-SA 4.0, with their license retained there. Original chart-source URLs and byte hashes are recorded. This updates the initial research-only boundary above; no Misviz application code, model or full dataset is bundled.
+A validation pass uses twenty published Misviz chart images locally. The images are excluded from Git and runtime samples. The attributed metadata subset and derived observations under `docs/evaluation/` use CC-BY-SA 4.0, with their license retained there. Original chart-source URLs and byte hashes are recorded. No Misviz application code, model or full dataset is bundled.

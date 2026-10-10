@@ -71,15 +71,14 @@ The Playwright suite uses installed Google Chrome locally and bundled Chromium i
 
 Tests execute real browser OCR, rather than mocking extracted results. Coverage includes all three samples, independent JPEG and percentage fixtures, unsupported geometries/scales, upload/drop/paste, cancellation/restart, manual corrections, review invalidation, export bytes, responsive widths and automated accessibility checks. Artifacts go to `output/playwright/`; failed checks retain traces in `test-results/`.
 
-See [Verification](docs/VERIFICATION.md) for the measured boundary and [Submission checklist](docs/SUBMISSION_CHECKLIST.md) for remaining manual actions.
+See [Verification](docs/VERIFICATION.md) for the measured boundary.
 
 The follow-up external stress test tried **20 real Misviz charts: 1 numerical reconstruction and 19 rejections**. The reconstructed chart's category labels still required manual correction. Most cases fall outside the narrow automatic family. These exploratory results informed fixes and do not establish general accuracy; see the [complete protocol, sources and outcomes](docs/evaluation/README.md).
 
-## Submission package
+## Project documentation
 
-- [Devpost description](docs/DEVPOST.md) — under 500 words.
-- [Demo script](docs/DEMO_SCRIPT.md) — actual 2:48 recording, with [exact read-aloud copy](docs/demo/READ_ALOUD.md), [video handoff](docs/demo/UPLOAD_GUIDE.md) and a [YouTube description](docs/demo/YOUTUBE_DESCRIPTION.md). Local MP4 deliverables are excluded from Git; the entrant uploads the final video.
-- [Official rules and judging review](docs/RULES_AND_RESEARCH.md) — includes conflicting deadlines.
+- [Technical architecture](docs/ARCHITECTURE.md).
+- [Verification](docs/VERIFICATION.md) and [external evaluation](docs/evaluation/README.md).
 - [AI disclosure](docs/AI_DISCLOSURE.md).
 - [Dependency/model attributions](THIRD_PARTY_NOTICES.md).
 

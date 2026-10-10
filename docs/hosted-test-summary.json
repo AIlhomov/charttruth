@@ -1,0 +1,15 @@
+{
+  "url": "https://ailhomov.github.io/charttruth/",
+  "stats": {
+    "total": 15,
+    "expected": 15,
+    "unexpected": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "ok": true
+  },
+  "metadata": {
+    "actualWorkers": 1
+  },
+  "source": "Hosted Playwright run with CHARTTRUTH_TEST_URL; extracted from the actual HTML report."
+}
