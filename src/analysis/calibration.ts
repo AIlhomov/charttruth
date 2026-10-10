@@ -164,6 +164,26 @@ export function extractData(
   });
 }
 
+export function hasUnmatchedCategories(
+  words: Word[],
+  bars: Bar[],
+  axisRight: number,
+): boolean {
+  const baseline = Math.max(...bars.map((b) => b.y + b.height));
+  return words.some(
+    (w) =>
+      w.confidence >= 70 &&
+      w.box.x > axisRight + 5 &&
+      w.box.y > baseline + 4 &&
+      w.box.y < baseline + 65 &&
+      !bars.some(
+        (b) =>
+          Math.abs(w.box.x + w.box.width / 2 - b.x - b.width / 2) <
+          b.width * 0.9,
+      ),
+  );
+}
+
 export function makeFindings(
   data: Datum[],
   calibration: Calibration,

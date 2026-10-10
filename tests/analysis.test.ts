@@ -4,6 +4,7 @@ import {
   axisTicks,
   calibrate,
   extractData,
+  hasUnmatchedCategories,
   makeFindings,
   parseNumeric,
   validateData,
@@ -11,6 +12,7 @@ import {
 import { chartDomain, chartSvg } from "../src/charts/render";
 import type { Bar, Datum, Tick, Word } from "../src/analysis/types";
 import { formatValue } from "../src/analysis/types";
+import { mergeOcrWords } from "../src/analysis/ocr";
 
 const tick = (value: number, y: number): Tick => ({
   value,
@@ -69,6 +71,16 @@ describe("strict numeric OCR parsing", () => {
   );
 });
 describe("geometry from pixels", () => {
+  it("retains a short bar beside larger values instead of silently omitting it", () => {
+    const { pixels, width, height } = image([
+      { x: 80, y: 233, w: 30, h: 7 },
+      { x: 160, y: 60, w: 30, h: 180 },
+      { x: 250, y: 75, w: 30, h: 165 },
+    ]);
+    expect(
+      detectGeometry(pixels, width, height).bars.map((b) => b.height),
+    ).toEqual([7, 180, 165]);
+  });
   it("measures rectangles while discarding text-sized components", () => {
     const { pixels, width, height } = image([
       { x: 80, y: 100, w: 30, h: 140 },
@@ -122,6 +134,40 @@ describe("geometry from pixels", () => {
     expect(() => detectGeometry(pixels, width, height)).toThrow(
       "Multiple fills",
     );
+  });
+});
+describe("OCR crop evidence merging", () => {
+  it("rejects an unmatched category that could represent an omitted short or zero bar", () => {
+    expect(
+      hasUnmatchedCategories([word("Cedar", 145, 320, 35)], bars, 50),
+    ).toBe(true);
+    expect(
+      hasUnmatchedCategories([word("Birch", 105, 320, 30)], bars, 50),
+    ).toBe(false);
+    expect(
+      hasUnmatchedCategories(
+        [word("0", 25, 305), word("Caption", 145, 390, 35)],
+        bars,
+        50,
+      ),
+    ).toBe(false);
+  });
+  it("uses stronger overlapping readings without creating duplicate labels", () => {
+    const original = [
+      word("138", 100, 100, 20, 80),
+      word("South", 200, 200, 35, 95),
+    ];
+    const merged = mergeOcrWords(original, [
+      word("18", 101, 100, 18, 96),
+      word("S0uth", 200, 200, 35, 45),
+    ]);
+    expect(merged.map((w) => w.text)).toEqual(["18", "South"]);
+    expect(original[0].text).toBe("138");
+  });
+  it("keeps spatially independent numbers even when their text agrees", () => {
+    expect(
+      mergeOcrWords([word("18", 100, 100)], [word("18", 200, 100)]),
+    ).toHaveLength(2);
   });
 });
 describe("calibration and evidence", () => {

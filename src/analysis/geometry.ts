@@ -71,7 +71,7 @@ export function detectGeometry(
     if (
       w >= Math.max(9, width * 0.012) &&
       w < width * 0.23 &&
-      h >= height * 0.045 &&
+      h >= Math.max(5, height * 0.018) &&
       fill > 0.87 &&
       y0 > height * 0.08 &&
       y1 < height * 0.93

@@ -41,11 +41,15 @@ A maximum common-bottom cluster (tolerance max(3 pixels, 0.009 × image height))
 
 Long neutral horizontal rows supply candidate gridline positions. These locate tick crops and refine OCR anchor positions; **they do not supply numeric values**.
 
+The external evaluation exposed an omitted short bar. Candidate height now starts at max(5 pixels, 0.018 × normalized image height). Confident category text below the baseline that cannot be associated with a detected bar causes rejection, reducing incomplete reconstructions when a very short or zero-height bar is missed. Tiny bars and unreadable category text can still evade these heuristics.
+
 ## OCR and structure
 
 Tesseract.js 7 uses its LSTM engine and the distributed English `4.0.0_best_int` model. Full-image sparse-text recognition supplies words, boxes and engine certainty. Targeted single-line crops retry missing y ticks at detected gridlines, missing printed values above measured bars, and missing category labels below the shared baseline. Crops include white padding and are mapped back to the same normalized pixel coordinate system. Numeric OCR is not forced with a digit whitelist; recognized text must pass strict numeric parsing.
 
 Axis candidates lie left of the bars, share a right edge and have engine certainty ≥45. Printed value candidates need certainty ≥70, near-center alignment, and proximity above the bar top. Category labels are associated by x position below the baseline. Excess missing labels or duplicate associations cause rejection to reduce grouped-chart false positives. Text association remains a limited spatial heuristic.
+
+Tick crops also retry the measured baseline position, including axes without full-width gridlines. Crop height is bounded by observed tick spacing to avoid merging adjacent numbers. Small text (median tick glyph height below 18 pixels) receives 2× crop enlargement; larger text keeps its native crop scale. Overlapping OCR retries retain the higher engine-certainty reading through `src/analysis/ocr.ts`; coordinates are mapped back before calibration. No retry is chosen because it agrees with an expected sample value or bar height. Printed numbers far outside the calibrated numeric range cause a review fallback.
 
 ## Linear calibration
 

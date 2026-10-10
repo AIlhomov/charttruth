@@ -1,0 +1,249 @@
+{
+  "date": "2026-10-10",
+  "sample_size": 20,
+  "initial_completed": 0,
+  "final_completed": 1,
+  "final_rejected": 19,
+  "limitation": "Exploratory stress test, not representative accuracy or a held-out benchmark. The broad collection mostly lies outside the declared automatic scope. Case 13 informed fixes and is no longer held out. OCR category labels remain poor in that case.",
+  "cases": [
+    {
+      "number": 1,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Dark/patterned background and non-flat fills",
+      "reason": "Multiple fills or gradients were found inside the bars. Stacked, patterned and gradient bars are outside automatic scope; use manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 2,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Horizontal photo infographic",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 3,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Zero-height categories and axis-connected shapes; incomplete bar set",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 4,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Legend-series roles cannot be resolved; no individual category labels",
+      "reason": "A shared baseline for 2\u201316 bars could not be established. Crop to one single-series vertical bar chart, or enter values manually.",
+      "automatic_findings": []
+    },
+    {
+      "number": 5,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Horizontal bars",
+      "reason": "A shared baseline for 2\u201316 bars could not be established. Crop to one single-series vertical bar chart, or enter values manually.",
+      "automatic_findings": []
+    },
+    {
+      "number": 6,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Horizontal stacked bars",
+      "reason": "Bar geometry is ambiguous: widths or overlaps do not match a standard single-series chart. Enter values manually instead.",
+      "automatic_findings": []
+    },
+    {
+      "number": 7,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Horizontal decorative bars",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 8,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "3D cylinders, gradient background, no numeric axis",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 9,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Horizontal bars",
+      "reason": "The axis ticks do not support a consistent linear scale. Logarithmic, inverted or irregular axes are unsupported; OCR errors can also cause this. No scale finding has been issued.",
+      "automatic_findings": []
+    },
+    {
+      "number": 10,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Many bars, two series and dual axes",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 11,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Grouped series and non-English/rotated labels",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 12,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Horizontal 3D bars; 67.1 megapixels exceeds input limit",
+      "reason": "Use an image at least 100 \u00d7 100 pixels and below 20 megapixels.",
+      "automatic_findings": []
+    },
+    {
+      "number": 13,
+      "initial_status": "rejected",
+      "final_status": "completed",
+      "visual_scope_review": "Single vertical series, small text and rotated category labels; numerical recovery with manual label review",
+      "extracted": [
+        {
+          "label": "NEY",
+          "value": 2,
+          "source": "printed",
+          "uncertainty": 0.22438794114930574,
+          "valueConfidence": 96,
+          "labelConfidence": 44
+        },
+        {
+          "label": "war",
+          "value": 5,
+          "source": "printed",
+          "uncertainty": 0.22438794114930574,
+          "valueConfidence": 92,
+          "labelConfidence": 29
+        },
+        {
+          "label": "Bar 3",
+          "value": 14,
+          "source": "printed",
+          "uncertainty": 0.22438794114930574,
+          "valueConfidence": 92,
+          "labelConfidence": null
+        },
+        {
+          "label": "Wy",
+          "value": 17.94,
+          "source": "geometry",
+          "uncertainty": 0.22438794114930574,
+          "valueConfidence": null,
+          "labelConfidence": 75
+        },
+        {
+          "label": "x",
+          "value": 4.14,
+          "source": "geometry",
+          "uncertainty": 0.22438794114930574,
+          "valueConfidence": null,
+          "labelConfidence": 50
+        },
+        {
+          "label": "eo\" 2 2",
+          "value": 8.18,
+          "source": "geometry",
+          "uncertainty": 0.22438794114930574,
+          "valueConfidence": null,
+          "labelConfidence": 30
+        },
+        {
+          "label": "so",
+          "value": 7,
+          "source": "printed",
+          "uncertainty": 0.22438794114930574,
+          "valueConfidence": 96,
+          "labelConfidence": 46
+        },
+        {
+          "label": "pot",
+          "value": 10,
+          "source": "printed",
+          "uncertainty": 0.22438794114930574,
+          "valueConfidence": 95,
+          "labelConfidence": 53
+        }
+      ],
+      "reference_values": [2, 5, 14, 18, 4, 8, 7, 10],
+      "reference_labels": [
+        "May",
+        "March",
+        "June",
+        "July",
+        "January",
+        "February",
+        "August",
+        "April"
+      ],
+      "reference_method": "Manually transcribed from the published chart, not inferred from the app output.",
+      "values_within_0_5_units": 8,
+      "exact_category_labels": 0,
+      "review_required": true
+    },
+    {
+      "number": 14,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Stacked multi-series chart with embedded table",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 15,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Decorative horizontal bars",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 16,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Gradient TV infographic without numeric y-axis",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 17,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Two chart panels in a single image",
+      "reason": "Negative values or a negative baseline were found. Automatic reconstruction currently supports nonnegative bars only. Use manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 18,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Horizontal stacked bars",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 19,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "3D perspective bars",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    },
+    {
+      "number": 20,
+      "initial_status": "rejected",
+      "final_status": "rejected",
+      "visual_scope_review": "Horizontal infographic",
+      "reason": "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "automatic_findings": []
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "protocol": "First 20 downloadable PNG/JPEG/WebP single-type bar-chart records ordered by SHA256('ChartTruth-2026:' + image_path), selected before application analysis. Downloads under 10 MB and dimensions >=100px. No selection by extraction success.",
+  "metadata_url": "https://raw.githubusercontent.com/UKPLab/acl2026-misviz/6a6612b4a3216ea4eaef157043347c0405d70f0a/data/misviz/misviz.json",
+  "metadata_sha256": "32c7592003c4507ae4edae3d52a553e512d44a30d48a6167dbce750e48e2c966",
+  "dataset": "Misviz (Tonglet, Zimny, Tuytelaars, Gurevych, ACL 2026)",
+  "dataset_license": "CC-BY-SA-4.0; individual chart source rights remain with their owners. Image files are not committed to the app repository.",
+  "selected": [
+    {
+      "number": 1,
+      "file": "01.jpg",
+      "dataset_id": "img/81518435478_misrepresentation.png",
+      "url": "https://64.media.tumblr.com/0d9d6cd47ec277cfc7c8866f52655d22/tumblr_n3bjkvfkHv1sgh0voo1_1280.pnj",
+      "dataset_labels": ["misrepresentation"],
+      "split": "test",
+      "sha256": "22217f0639beac9733bb94a2d1f7d9d416e1a213d63ba252b69589bd1a290f36",
+      "width": 1096,
+      "height": 617
+    },
+    {
+      "number": 2,
+      "file": "02.jpg",
+      "dataset_id": "img/001031_d67a21856a855ade_misrepresentation.jpg",
+      "url": "https://raw.githubusercontent.com/leoyuholo/bad-vis-browser/refs/heads/master/gallery/Stage%203%3A%20Plotting/Inconsistency/Misrepresentation/001031_d67a21856a855ade_misrepresentation.jpg",
+      "dataset_labels": ["misrepresentation"],
+      "split": "test",
+      "sha256": "a859175eed592ea8164803c98010c44110f1317c24a3caf9700f417f3bece717",
+      "width": 750,
+      "height": 817
+    },
+    {
+      "number": 3,
+      "file": "03.jpg",
+      "dataset_id": "img/002818_af0dd28dd293d0d2_truncated axis.jpg",
+      "url": "https://raw.githubusercontent.com/leoyuholo/bad-vis-browser/refs/heads/master/gallery/Stage%202%3A%20Visualization%20Design/Choice%20of%20Axis/Truncated%20Axis/002818_af0dd28dd293d0d2_truncated%20axis.jpg",
+      "dataset_labels": ["truncated axis"],
+      "split": "test",
+      "sha256": "a8f8e70d3151f56bfbe31f6c537b840ca3faa56629d3925f5c01133916f4fb0c",
+      "width": 474,
+      "height": 251
+    },
+    {
+      "number": 4,
+      "file": "04.png",
+      "dataset_id": "img/004033_e699999999269966_truncated axis.png",
+      "url": "https://raw.githubusercontent.com/leoyuholo/bad-vis-browser/refs/heads/master/gallery/Stage%202%3A%20Visualization%20Design/Choice%20of%20Axis/Truncated%20Axis/004033_e699999999269966_truncated%20axis.png",
+      "dataset_labels": ["truncated axis"],
+      "split": "test",
+      "sha256": "a84908fdb7847a66e2aeffd18fcf17ee9f02d5fd53a02b4fb3556b1c0625c32f",
+      "width": 600,
+      "height": 371
+    },
+    {
+      "number": 5,
+      "file": "05.png",
+      "dataset_id": "img/5hu27i.png",
+      "url": "http://i.imgur.com/T80WzIP.png",
+      "dataset_labels": [],
+      "split": "test",
+      "sha256": "2edd861fc6f64686ec37ec021c217b072edab569cdccd8beea04ee3784cf1dc0",
+      "width": 734,
+      "height": 510
+    },
+    {
+      "number": 6,
+      "file": "06.jpg",
+      "dataset_id": "img/ou70e1_misrepresentation.png",
+      "url": "https://i.redd.it/hel2vdlg18e71.jpg",
+      "dataset_labels": ["misrepresentation"],
+      "split": "val",
+      "sha256": "c6f50e496d9fee67b2269ec746f7b153c1122946feb52dd210d9b9c3b98da530",
+      "width": 1440,
+      "height": 1428
+    },
+    {
+      "number": 7,
+      "file": "07.png",
+      "dataset_id": "img/kfqxmp_truncated axis.png",
+      "url": "https://i.redd.it/l84fvi6eqz561.png",
+      "dataset_labels": ["truncated axis"],
+      "split": "test",
+      "sha256": "82084097932d2f81c86d5c069c3224e9a9736b9cb5517af866d9f3ebf93846f6",
+      "width": 1080,
+      "height": 1071
+    },
+    {
+      "number": 8,
+      "file": "08.jpg",
+      "dataset_id": "img/149135913085_misrepresentation.png",
+      "url": "https://64.media.tumblr.com/a037ee2d666eb67a27b7ab6d9b8ac019/tumblr_oc0db0N4yZ1sgh0voo1_640.jpg",
+      "dataset_labels": ["misrepresentation"],
+      "split": "test",
+      "sha256": "c98e3f64ef235ea89d439c6499b7bf50fea08460ed342c9166679cc7224d5091",
+      "width": 615,
+      "height": 381
+    },
+    {
+      "number": 9,
+      "file": "09.png",
+      "dataset_id": "img/bcbg5y.png",
+      "url": "https://i.redd.it/xso5ntssvsr21.png",
+      "dataset_labels": [],
+      "split": "test",
+      "sha256": "dc52607798638e949a52dad3dc288c20113fbeb195d66ee71edd678805ca6f2e",
+      "width": 1166,
+      "height": 936
+    },
+    {
+      "number": 10,
+      "file": "10.png",
+      "dataset_id": "img/5mxafo.png",
+      "url": "https://i.redd.it/plviyyabfo8y.png",
+      "dataset_labels": [],
+      "split": "test",
+      "sha256": "165e713eba15e974abf640dc05746b36df7df3dfd8d7ae54c6852f19d71d0512",
+      "width": 783,
+      "height": 517
+    },
+    {
+      "number": 11,
+      "file": "11.png",
+      "dataset_id": "img/006191_ab2485052f2f353f_inappropriate item order.png",
+      "url": "https://raw.githubusercontent.com/leoyuholo/bad-vis-browser/refs/heads/master/gallery/Stage%201%3A%20Input/Lie%20with%20Stats/Inappropriate%20Item%20Order/006191_ab2485052f2f353f_inappropriate%20item%20order.png",
+      "dataset_labels": ["inappropriate item order"],
+      "split": "test",
+      "sha256": "f0de08fd51ecf692709379c57e24c6e3bb9dd3e36790fc6ae728b911cd5198c9",
+      "width": 1267,
+      "height": 696
+    },
+    {
+      "number": 12,
+      "file": "12.jpg",
+      "dataset_id": "img/prgihw_truncated axis_3d.png",
+      "url": "https://i.redd.it/ug6gqtzc9ho71.jpg",
+      "dataset_labels": ["3d", "truncated axis"],
+      "split": "dev",
+      "sha256": "d62920963736bf948805aced467ccc6d53fbde48f24cde430442347fc53535f7",
+      "width": 8192,
+      "height": 8192
+    },
+    {
+      "number": 13,
+      "file": "13.jpg",
+      "dataset_id": "img/149038630374_inappropriate item order.png",
+      "url": "https://64.media.tumblr.com/dfcd8585de39e63c2cb4ea28c3b66308/tumblr_obshgcwlh21sgh0voo1_640.pnj",
+      "dataset_labels": ["inappropriate item order"],
+      "split": "test",
+      "sha256": "a7d5bb9e4768315d679f7a4f1b82739db31192bf8dd199bb4e318b72ed3383d4",
+      "width": 618,
+      "height": 289
+    },
+    {
+      "number": 14,
+      "file": "14.png",
+      "dataset_id": "img/002149_9fc0781fe13ec138_3d.png",
+      "url": "https://raw.githubusercontent.com/leoyuholo/bad-vis-browser/refs/heads/master/gallery/Stage%204%3A%20Perception/Visual%20Illusion/3D/002149_9fc0781fe13ec138_3d-missing%20abbreviation.png",
+      "dataset_labels": ["3d"],
+      "split": "test",
+      "sha256": "f87118f1eb457c1d36515e6889817af3499691294ab49db4d0e8806771d90646",
+      "width": 1712,
+      "height": 1465
+    },
+    {
+      "number": 15,
+      "file": "15.jpg",
+      "dataset_id": "img/6woomc_misrepresentation.png",
+      "url": "https://i.redd.it/jazkcqi8kliz.jpg",
+      "dataset_labels": ["misrepresentation"],
+      "split": "test",
+      "sha256": "1d9b976a9b096ecfef69da7142ad1d7bdfbe1e6dc859e0f811277e2a64451091",
+      "width": 800,
+      "height": 450
+    },
+    {
+      "number": 16,
+      "file": "16.jpg",
+      "dataset_id": "img/4ue119_misrepresentation.png",
+      "url": "https://i.redd.it/5tcg4ancx7bx.jpg",
+      "dataset_labels": ["misrepresentation"],
+      "split": "val",
+      "sha256": "c89a1e8301e7dbbf21657f66ce242d11e53126428f3a2aa77102dfe3946c07a2",
+      "width": 600,
+      "height": 367
+    },
+    {
+      "number": 17,
+      "file": "17.jpg",
+      "dataset_id": "img/7ativp.png",
+      "url": "https://i.redd.it/27nal7uj21wz.jpg",
+      "dataset_labels": [],
+      "split": "test",
+      "sha256": "c1683d78a3edd311b5e91dbee35cdbdef3cee3ec5f9fb98b5d64d583f8b4d827",
+      "width": 468,
+      "height": 561
+    },
+    {
+      "number": 18,
+      "file": "18.png",
+      "dataset_id": "img/3ywv1i.png",
+      "url": "http://i.imgur.com/QKIcik2.png?v=1",
+      "dataset_labels": [],
+      "split": "test",
+      "sha256": "496255509d56d17d936b733a2ec1ecef647b1f15f30f486309241749ccab6bce",
+      "width": 1626,
+      "height": 1476
+    },
+    {
+      "number": 19,
+      "file": "19.jpg",
+      "dataset_id": "img/h86bmw_3d.png",
+      "url": "https://i.imgur.com/Hf79gP2.jpg",
+      "dataset_labels": ["3d"],
+      "split": "test",
+      "sha256": "6ce13d318354f129f9dea48c43e62614406531345a404f34e6e8f961a333127d",
+      "width": 3120,
+      "height": 1440
+    },
+    {
+      "number": 20,
+      "file": "20.jpg",
+      "dataset_id": "img/64499634122_misrepresentation.png",
+      "url": "https://64.media.tumblr.com/634f3260ae7dee94be86e8af97beb9ef/tumblr_mucvb18O8t1sgh0voo1_1280.pnj",
+      "dataset_labels": ["misrepresentation"],
+      "split": "test",
+      "sha256": "8eeb4a5fe40abdf858d7a2d031e5a2379778ca5ec8e230f8fcb15ee12ed1431c",
+      "width": 724,
+      "height": 572
+    }
+  ],
+  "unavailable_before_selection_completed": []
+}

@@ -1,9 +1,11 @@
 import { createWorker, PSM } from "tesseract.js";
 import type { Analysis, GeometryResult, Progress, Word } from "./types";
+import { mergeOcrWords } from "./ocr";
 import {
   axisTicks,
   calibrate,
   extractData,
+  hasUnmatchedCategories,
   makeFindings,
   parseNumeric,
 } from "./calibration";
@@ -53,7 +55,7 @@ function guarded<T>(
 type OcrPage = Awaited<
   ReturnType<Awaited<ReturnType<typeof createWorker>>["recognize"]>
 >["data"];
-function readWords(data: OcrPage, offsetX = 0, offsetY = 0): Word[] {
+function readWords(data: OcrPage, offsetX = 0, offsetY = 0, scale = 1): Word[] {
   return (data.blocks || []).flatMap((block) =>
     block.paragraphs.flatMap((p) =>
       p.lines.flatMap((l) =>
@@ -61,10 +63,10 @@ function readWords(data: OcrPage, offsetX = 0, offsetY = 0): Word[] {
           text: w.text,
           confidence: w.confidence,
           box: {
-            x: w.bbox.x0 + offsetX,
-            y: w.bbox.y0 + offsetY,
-            width: w.bbox.x1 - w.bbox.x0,
-            height: w.bbox.y1 - w.bbox.y0,
+            x: w.bbox.x0 / scale + offsetX,
+            y: w.bbox.y0 / scale + offsetY,
+            width: (w.bbox.x1 - w.bbox.x0) / scale,
+            height: (w.bbox.y1 - w.bbox.y0) / scale,
           },
         })),
       ),
@@ -215,8 +217,13 @@ export async function analyze(
       signal,
       cancel,
     );
-    const words = readWords(data);
+    let words = readWords(data);
     const initialTicks = axisTicks(words, bars, horizontalLines);
+    const textHeights = initialTicks
+      .map((t) => t.box.height)
+      .sort((a, b) => a - b);
+    const typicalTextHeight =
+      textHeights[Math.floor(textHeights.length / 2)] ?? 24;
     await worker.setParameters({ tessedit_pageseg_mode: PSM.SINGLE_LINE });
     const cropWords = async (
       x: number,
@@ -230,9 +237,11 @@ export async function analyze(
       const w = Math.min(Math.ceil(width), canvas.width - left),
         h = Math.min(Math.ceil(height), canvas.height - top);
       const crop = document.createElement("canvas");
-      crop.width = w + 24;
-      crop.height = h + 24;
+      const cropScale = typicalTextHeight < 18 ? 2 : 1;
+      crop.width = (w + 24) * cropScale;
+      crop.height = (h + 24) * cropScale;
       const ctx = crop.getContext("2d")!;
+      ctx.scale(cropScale, cropScale);
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, crop.width, crop.height);
       ctx.drawImage(canvas, left, top, w, h, 12, 12, w, h);
@@ -241,7 +250,7 @@ export async function analyze(
         signal,
         cancel,
       );
-      return readWords(result.data, left - 12, top - 12).filter(
+      return readWords(result.data, left - 12, top - 12, cropScale).filter(
         (w) =>
           w.confidence >= (numericOnly ? 70 : 35) &&
           (!numericOnly || parseNumeric(w.text) !== null),
@@ -253,17 +262,38 @@ export async function analyze(
         .map((t) => t.box.x + t.box.width)
         .sort((a, b) => a - b);
       const right = edges[Math.floor(edges.length / 2)];
-      const halfHeight = Math.max(18, canvas.height * 0.028);
+      const left = Math.max(
+        0,
+        Math.min(...initialTicks.map((t) => t.box.x)) -
+          Math.max(8, ...initialTicks.map((t) => t.box.height)),
+      );
+      const sortedY = initialTicks.map((t) => t.y).sort((a, b) => a - b);
+      const spacing = Math.min(
+        ...sortedY.slice(1).map((y, i) => y - sortedY[i]),
+      );
+      // Dense axes need a crop shorter than the tick spacing; otherwise OCR
+      // merges two real tick numbers into an unreadable single line.
+      const halfHeight = Math.max(
+        8,
+        Math.min(Math.max(18, canvas.height * 0.028), spacing * 0.42),
+      );
       const bottom = Math.max(...bars.map((b) => b.y + b.height));
-      for (const y of horizontalLines.filter((y) => y <= bottom + 5)) {
+      // The measured bar edge also locates a possible baseline label when an
+      // axis has tick marks but no full-width gridline. It supplies no number.
+      const retryPositions = [...horizontalLines, bottom].filter(
+        (y, i, all) =>
+          y <= bottom + 5 && !all.slice(0, i).some((p) => Math.abs(p - y) < 4),
+      );
+      for (const y of retryPositions) {
         if (initialTicks.some((t) => Math.abs(t.y - y) < 10)) continue;
-        words.push(
-          ...(await cropWords(
-            right - 130,
+        words = mergeOcrWords(
+          words,
+          await cropWords(
+            left,
             y - halfHeight,
-            150,
+            right - left + 8,
             halfHeight * 2,
-          )),
+          ),
         );
       }
     }
@@ -272,19 +302,21 @@ export async function analyze(
       const alreadyRead = words.some(
         (w) =>
           parseNumeric(w.text) !== null &&
-          w.confidence >= 70 &&
+          w.confidence >= 90 &&
+          w.box.height >= 18 &&
           Math.abs(w.box.x + w.box.width / 2 - center) < bar.width * 0.65 &&
           w.box.y + w.box.height <= bar.y + 4 &&
           bar.y - w.box.y - w.box.height < 45,
       );
       if (!alreadyRead)
-        words.push(
-          ...(await cropWords(
+        words = mergeOcrWords(
+          words,
+          await cropWords(
             center - bar.width * 0.8,
             bar.y - canvas.height * 0.085,
             bar.width * 1.6,
             canvas.height * 0.08,
-          )),
+          ),
         );
     }
     const baselineY = Math.max(...bars.map((b) => b.y + b.height));
@@ -294,17 +326,19 @@ export async function analyze(
         (w) =>
           w.box.y > baselineY + 4 &&
           w.box.y < baselineY + 65 &&
+          w.confidence >= 80 &&
           Math.abs(w.box.x + w.box.width / 2 - center) < bar.width * 0.9,
       );
       if (!hasLabel)
-        words.push(
-          ...(await cropWords(
+        words = mergeOcrWords(
+          words,
+          await cropWords(
             center - bar.width,
             baselineY + 5,
             bar.width * 2,
             canvas.height * 0.09,
             false,
-          )),
+          ),
         );
     }
     if (signal.aborted) throw new DOMException("Cancelled", "AbortError");
@@ -325,6 +359,29 @@ export async function analyze(
         "Negative values or a negative baseline were found. Automatic reconstruction currently supports nonnegative bars only. Use manual entry.",
       );
     const rows = extractData(words, bars, calibration);
+    if (
+      hasUnmatchedCategories(
+        words,
+        bars,
+        Math.max(...ticks.map((t) => t.box.x + t.box.width)),
+      )
+    )
+      throw new Error(
+        "Some category text has no detected bar. Very short or zero-height bars may be missing. Use manual entry to avoid an incomplete reconstruction.",
+      );
+    const tickMaximum = Math.max(...ticks.map((t) => t.value));
+    const tickSpan = tickMaximum - Math.min(...ticks.map((t) => t.value));
+    if (
+      rows.some(
+        (d) =>
+          d.printedValue !== undefined &&
+          (d.printedValue > tickMaximum + tickSpan * 0.15 ||
+            d.printedValue < calibration.baseline - tickSpan * 0.15),
+      )
+    )
+      throw new Error(
+        "A printed value falls outside the calibrated axis range. This may be an OCR error; no distortion finding has been issued. Check the image and enter values manually.",
+      );
     // A grouped chart may look geometrically regular. Require one category per detected bar.
     if (
       rows.filter((d) => d.labelConfidence === undefined).length >

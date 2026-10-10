@@ -2,6 +2,8 @@
 
 **See the whole picture.** An original chart-forensics workspace for Banana Hacks 2026.
 
+**[Live demo](https://ailhomov.github.io/charttruth/) · [Public source](https://github.com/AIlhomov/charttruth) · [External evaluation](docs/evaluation/README.md)**
+
 Upload a bar-chart screenshot, inspect the evidence, correct extracted values, and compare the source with a zero-baseline reconstruction. Processing runs in your browser, with no account, API key, paid service or external inference endpoint.
 
 ![Actual ChartTruth production interface comparing a synthetic chart with inconsistent bar heights against its reconstruction](docs/screenshots/comparison.png)
@@ -70,6 +72,8 @@ The Playwright suite uses installed Google Chrome locally and bundled Chromium i
 Tests execute real browser OCR, rather than mocking extracted results. Coverage includes all three samples, independent JPEG and percentage fixtures, unsupported geometries/scales, upload/drop/paste, cancellation/restart, manual corrections, review invalidation, export bytes, responsive widths and automated accessibility checks. Artifacts go to `output/playwright/`; failed checks retain traces in `test-results/`.
 
 See [Verification](docs/VERIFICATION.md) for the measured boundary and [Submission checklist](docs/SUBMISSION_CHECKLIST.md) for remaining manual actions.
+
+The follow-up external stress test tried **20 real Misviz charts: 1 numerical reconstruction and 19 rejections**. The reconstructed chart's category labels still required manual correction. Most cases fall outside the narrow automatic family. These exploratory results informed fixes and do not establish general accuracy; see the [complete protocol, sources and outcomes](docs/evaluation/README.md).
 
 ## Submission package
 

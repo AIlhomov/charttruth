@@ -27,3 +27,7 @@ TypeScript (Apache-2.0), Vite and its React plugin (MIT), Vitest (MIT), Playwrig
 The full [research record](docs/RULES_AND_RESEARCH.md) credits DataDetective, WebPlotDigitizer, Chart-InforX, Misviz, PlotDigitizer, Image Comparison Slider, DePlot and Observable, plus the linked FastToChart, Dribbble, Powerdrill, InsightX and Datawrapper designs. These informed concepts, limitations and general interaction patterns. No application code, screenshot, illustration, sample chart or dataset from those projects is distributed.
 
 The ChartTruth wordmark, CSS interface and all three synthetic samples are original project work created during Banana Hacks 2026. Synthetic values are illustrative and are never presented as real-world data.
+
+## External evaluation additions
+
+A later validation pass uses twenty published Misviz chart images locally. The images are excluded from Git and runtime samples. The attributed metadata subset and derived observations under `docs/evaluation/` use CC-BY-SA 4.0, with their license retained there. Original chart-source URLs and byte hashes are recorded. This updates the initial research-only boundary above; no Misviz application code, model or full dataset is bundled.

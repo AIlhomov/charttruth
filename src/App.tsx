@@ -90,6 +90,8 @@ export default function App() {
   const svg = validData ? chartSvg(data, title, unit, reviewed, context) : "";
   const cautionCount =
     analysis?.findings.filter((f) => f.level === "caution").length ?? 0;
+  const hasEstimates =
+    analysis?.data.some((d) => d.printedValue === undefined) ?? false;
 
   useEffect(
     () => () => {
@@ -785,7 +787,9 @@ export default function App() {
                     <h3>
                       {cautionCount
                         ? "A different scale can tell a different story."
-                        : "The visible evidence supports this comparison."}
+                        : hasEstimates
+                          ? "The baseline is supported. Some values need review."
+                          : "The visible evidence supports this comparison."}
                     </h3>
                     <p>
                       {analysis.calibration.baseline >
@@ -800,6 +804,8 @@ export default function App() {
                         </>
                       ) : cautionCount ? (
                         "The reconstruction uses readable printed values. Check the height discrepancies and verify the labels below."
+                      ) : hasEstimates ? (
+                        "A zero baseline is supported. Some values come from bar heights, so their proportions have not been independently checked. Review the source and table."
                       ) : (
                         "A zero baseline and consistent proportions were supported. This does not verify the source data."
                       )}
