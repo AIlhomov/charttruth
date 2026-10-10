@@ -1,6 +1,8 @@
 # Verification record
 
-Measured on **10 October 2026** on Windows with Node.js **24.14.1**, npm **11.11.0**, and installed Google Chrome **155.0.8059.39**, controlled by Playwright. These results describe this local build, not a hosted release or broad chart-recognition benchmark.
+The tables below record the initial local build. The follow-up build adds **41 passing unit tests and 15 passing browser tests**, external evaluation, a public repository and a GitHub Pages deployment. The complete browser suite also passed **15/15 against the public HTTPS application**, with zero failures, flaky cases or skips. See [external results](evaluation/README.md), [public-site and recording checks](demo/VERIFICATION.md) and the [submission checklist](SUBMISSION_CHECKLIST.md) for the current handoff.
+
+Measured on **10 October 2026** on Windows with Node.js **24.14.1**, npm **11.11.0**, and installed Google Chrome **155.0.8059.39**, controlled by Playwright. The historical tables describe the initial local build; the follow-up above additionally tests the hosted release. Neither establishes broad chart-recognition accuracy.
 
 ## Completed gates
 
@@ -48,6 +50,6 @@ Additional screenshots, downloaded artifacts and the latest HTML test report are
 
 ## Exact remaining boundary
 
-No public GitHub remote, hosting deployment, YouTube recording/upload, entrant-eligibility confirmation or Devpost submission was performed. The GitHub Actions workflow is prepared but has not run on GitHub. See the [submission checklist](SUBMISSION_CHECKLIST.md).
+At the initial build boundary, no public GitHub remote, hosting deployment, YouTube recording/upload, entrant-eligibility confirmation or Devpost submission had been performed. The follow-up publishes [the repository](https://github.com/AIlhomov/charttruth) and deploys [GitHub Pages](https://ailhomov.github.io/charttruth/), with successful GitHub Actions runs visible in the repository. A local screen recording is also prepared. YouTube upload, entrant eligibility and the competition submission remain manual. See the [submission checklist](SUBMISSION_CHECKLIST.md).
 
-There is no held-out real-world accuracy benchmark. The detector supports a deliberately narrow chart family and can reject readable charts or mistake unusual geometry for supported bars. OCR diagnostics and geometric uncertainty do not certify the source data. Review against the original remains necessary.
+There is no held-out real-world accuracy benchmark. The follow-up [20-chart exploratory stress test](evaluation/README.md) reports 1 numerical reconstruction and 19 rejections, including poor category-label OCR. The case used to inform fixes is not held out. The detector supports a deliberately narrow chart family and can reject readable charts or mistake unusual geometry for supported bars. OCR diagnostics and geometric uncertainty do not certify the source data. Review against the original remains necessary.

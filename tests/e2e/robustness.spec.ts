@@ -76,7 +76,7 @@ async function fixture(
 test("independent unlabelled JPEG uses geometric estimates, not sample metadata", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   const pixels = await fixture(page, "plain", "image/jpeg");
   await page.getByLabel("Upload chart image").setInputFiles({
     name: "trees.jpg",
@@ -110,7 +110,7 @@ test("independent unlabelled JPEG uses geometric estimates, not sample metadata"
 test("percentage labels retain their unit in the reconstructed chart", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   const pixels = await fixture(page, "percent");
   await page.getByLabel("Upload chart image").setInputFiles({
     name: "percent.png",
@@ -125,7 +125,7 @@ test("percentage labels retain their unit in the reconstructed chart", async ({
 test("numeric axes with tick marks and no full-width gridlines are calibrated", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   const pixels = await fixture(page, "tick-marks");
   await page.getByLabel("Upload chart image").setInputFiles({
     name: "tick-marks.png",
@@ -150,7 +150,7 @@ for (const mode of ["log", "stacked", "grouped", "two-ticks", "short"] as const)
   test(`rejects unsupported ${mode} fixture without a finding`, async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("./");
     const pixels = await fixture(page, mode);
     await page.getByLabel("Upload chart image").setInputFiles({
       name: `${mode}.png`,
@@ -168,7 +168,7 @@ for (const mode of ["log", "stacked", "grouped", "two-ticks", "short"] as const)
 test("drag-drop, clipboard paste, cancellation and restarting are functional", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   const pixels = await fixture(page);
   await page.locator(".dropzone").evaluate((element, base64) => {
     const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
@@ -221,7 +221,7 @@ test("empty and analyzed states pass automated accessibility checks", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
+  await page.goto("./");
   let results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
     .analyze();

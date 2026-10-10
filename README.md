@@ -67,7 +67,7 @@ npm run test:e2e
 npm run gauntlet
 ```
 
-The Playwright suite uses installed Google Chrome locally and bundled Chromium in CI. For a machine without Chrome, install it or remove the `channel` setting in `playwright.config.ts` and run `npx playwright install chromium`. Run `npm ci` with development dependencies to get test tooling. Tests launch an isolated server on port 5191 and fail if it is occupied. To test an already served production build, set `CHARTTRUTH_TEST_URL` to its complete origin instead.
+The Playwright suite uses installed Google Chrome locally and bundled Chromium in CI. For a machine without Chrome, install it or remove the `channel` setting in `playwright.config.ts` and run `npx playwright install chromium`. Run `npm ci` with development dependencies to get test tooling. Tests launch an isolated server on port 5191 and fail if it is occupied. To test an already served production build, set `CHARTTRUTH_TEST_URL` to its complete application URL, including any subdirectory and a trailing slash.
 
 Tests execute real browser OCR, rather than mocking extracted results. Coverage includes all three samples, independent JPEG and percentage fixtures, unsupported geometries/scales, upload/drop/paste, cancellation/restart, manual corrections, review invalidation, export bytes, responsive widths and automated accessibility checks. Artifacts go to `output/playwright/`; failed checks retain traces in `test-results/`.
 
@@ -78,7 +78,7 @@ The follow-up external stress test tried **20 real Misviz charts: 1 numerical re
 ## Submission package
 
 - [Devpost description](docs/DEVPOST.md) — under 500 words.
-- [Demo script](docs/DEMO_SCRIPT.md) — approximately 2 minutes 40 seconds.
+- [Demo script](docs/DEMO_SCRIPT.md) — actual 2:48 recording, with [exact read-aloud copy](docs/demo/READ_ALOUD.md), [video handoff](docs/demo/UPLOAD_GUIDE.md) and a [YouTube description](docs/demo/YOUTUBE_DESCRIPTION.md). Local MP4 deliverables are excluded from Git; the entrant uploads the final video.
 - [Official rules and judging review](docs/RULES_AND_RESEARCH.md) — includes conflicting deadlines.
 - [AI disclosure](docs/AI_DISCLOSURE.md).
 - [Dependency/model attributions](THIRD_PARTY_NOTICES.md).

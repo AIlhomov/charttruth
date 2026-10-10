@@ -46,7 +46,7 @@ test("real OCR: truncated sample → evidence → edit → confirm → SVG, PNG 
       remote.push(r.url());
   });
   await page.setViewportSize({ width: 1440, height: 1050 });
-  await page.goto("/");
+  await page.goto("./");
   await selectSample(page, "The growth illusion");
   await expect(
     page.getByRole("heading", { name: "The vertical axis starts above zero" }),
@@ -128,7 +128,7 @@ test("real OCR: truncated sample → evidence → edit → confirm → SVG, PNG 
 test("real OCR: honest and inconsistent proportion samples produce different supported findings", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   await selectSample(page, "A fair comparison");
   await expect(
     page.getByRole("heading", { name: "A zero baseline is supported" }),
@@ -162,7 +162,7 @@ test("real OCR: honest and inconsistent proportion samples produce different sup
 test("upload a differently named PNG with no sample ID, then confirm and export", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   const file = await saveSample(page, 0, "unrecognized-upload.png");
   await page.getByLabel("Upload chart image").setInputFiles({
     name: file.name,
@@ -189,7 +189,7 @@ test("upload a differently named PNG with no sample ID, then confirm and export"
 test("unsupported geometry and invalid uploads have an honest manual fallback", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.getByLabel("Upload chart image").setInputFiles({
     name: "document.pdf",
     mimeType: "application/pdf",
@@ -247,7 +247,7 @@ test("mobile workflow, keyboard modal, responsive widths and full source image",
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "How it works", exact: true }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");

@@ -1,0 +1,102 @@
+[
+  {
+    "number": 1,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nMultiple fills or gradients were found inside the bars. Stacked, patterned and gradient bars are outside automatic scope; use manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 2,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 3,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 4,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 5,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nA shared baseline for 2\u201316 bars could not be established. Crop to one single-series vertical bar chart, or enter values manually.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 6,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nBar geometry is ambiguous: widths or overlaps do not match a standard single-series chart. Enter values manually instead.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 7,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 8,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 9,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nThe axis ticks do not support a consistent linear scale. Logarithmic, inverted or irregular axes are unsupported; OCR errors can also cause this. No scale finding has been issued.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 10,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 11,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 12,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nUse an image at least 100 \u00d7 100 pixels and below 20 megapixels.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 13,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nReadable ticks do not reach the baseline. A zero-baseline claim would require too much extrapolation. Use manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 14,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 15,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 16,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 17,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nNegative values or a negative baseline were found. Automatic reconstruction currently supports nonnegative bars only. Use manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 18,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 19,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  },
+  {
+    "number": 20,
+    "status": "rejected",
+    "reason": "Let\u2019s take a closer look\n\nWe could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.\n\nTry another image\nEnter values manually"
+  }
+]
