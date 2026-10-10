@@ -1,0 +1,10 @@
+node_modules/
+dist/
+public/ocr/
+output/
+test-results/
+playwright-report/
+.playwright-cli/
+*.tsbuildinfo
+.env*
+!.env.example
