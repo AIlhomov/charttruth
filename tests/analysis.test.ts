@@ -256,6 +256,19 @@ describe("OCR crop evidence merging", () => {
     );
     expect(merged.map((w) => w.text)).toEqual(["Period4"]);
   });
+  it("prefers a tighter tick box when text and confidence agree, excluding attached axis ink", () => {
+    const merged = mergeOcrWords(
+      [word("48", 100, 100, 60, 96)],
+      [word("48", 100, 100, 35, 96)],
+    );
+    expect(merged[0].box.width).toBe(35);
+    expect(
+      mergeOcrWords(
+        [word("48", 100, 100, 60, 96)],
+        [word("4", 100, 100, 35, 96)],
+      )[0].text,
+    ).toBe("48");
+  });
 });
 describe("calibration and evidence", () => {
   it("maps pixel positions using all ticks and detects a truncated baseline", () => {
