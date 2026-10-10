@@ -62,6 +62,7 @@ export interface Analysis {
 export interface GeometryResult {
   bars: Bar[];
   horizontalLines: number[];
+  axisLabelRight?: number;
 }
 export interface Progress {
   stage: "geometry" | "ocr" | "validation";

@@ -71,6 +71,75 @@ describe("strict numeric OCR parsing", () => {
   );
 });
 describe("geometry from pixels", () => {
+  it("separates shaded coloured bars from pale blue decoration and touching axes", () => {
+    const { pixels, width, height } = image([]);
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++)
+        pixels.set(
+          [190 + Math.round(12 * Math.sin(x / 40)), 220, 245, 255],
+          (y * width + x) * 4,
+        );
+    const paint = (x: number, y: number, color: number[]) =>
+      pixels.set([...color, 255], (y * width + x) * 4);
+    for (let x = 40; x < 360; x++) paint(x, 240, [25, 65, 80]);
+    for (let y = 20; y <= 240; y++) paint(40, y, [25, 65, 80]);
+    for (const y of [60, 120, 180, 240])
+      for (let x = 34; x < 40; x++) paint(x, y, [25, 65, 80]);
+    const shapes = [
+      { x: 80, y: 180, color: [100, 120, 225] },
+      { x: 160, y: 60, color: [45, 65, 165] },
+      { x: 250, y: 120, color: [45, 90, 75] },
+    ];
+    for (const bar of shapes)
+      for (let y = bar.y; y < 240; y++)
+        for (let x = bar.x; x < bar.x + 30; x++) {
+          const shade = 1 - (0.6 * (y - bar.y)) / (240 - bar.y);
+          paint(
+            x,
+            y,
+            bar.color.map((v) => Math.round(v * shade)),
+          );
+        }
+    const result = detectGeometry(pixels, width, height);
+    expect(result.bars.map((b) => [b.x, b.y, b.height])).toEqual([
+      [80, 180, 60],
+      [160, 60, 180],
+      [250, 120, 120],
+    ]);
+    expect(result.horizontalLines).toEqual([60, 120, 180, 240]);
+  });
+  it("rejects abrupt same-hue brightness steps that could be stacked segments", () => {
+    const { pixels, width, height } = image([
+      { x: 70, y: 80, w: 30, h: 160, color: [50, 80, 200] },
+      { x: 160, y: 60, w: 30, h: 180, color: [50, 80, 200] },
+      { x: 70, y: 80, w: 30, h: 70, color: [25, 40, 100] },
+    ]);
+    expect(() => detectGeometry(pixels, width, height)).toThrow(
+      "Multiple fills",
+    );
+  });
+  it("excludes a short bar's antialiased bottom edge from interior stack checks", () => {
+    const { pixels, width, height } = image([
+      { x: 70, y: 222, w: 30, h: 18, color: [255, 131, 48] },
+      { x: 160, y: 60, w: 30, h: 180, color: [255, 131, 48] },
+      { x: 70, y: 238, w: 30, h: 2, color: [199, 132, 84] },
+    ]);
+    expect(detectGeometry(pixels, width, height).bars).toHaveLength(2);
+  });
+  it("uses the centre of thick baseline ink and ignores disconnected number-like marks", () => {
+    const { pixels, width, height } = image([
+      { x: 80, y: 180, w: 30, h: 60 },
+      { x: 160, y: 60, w: 30, h: 180 },
+      { x: 38, y: 20, w: 5, h: 224, color: [20, 20, 20] },
+      { x: 38, y: 239, w: 320, h: 5, color: [20, 20, 20] },
+      { x: 28, y: 118, w: 15, h: 3, color: [20, 20, 20] },
+      { x: 23, y: 160, w: 8, h: 12, color: [20, 20, 20] },
+    ]);
+    const result = detectGeometry(pixels, width, height);
+    expect(result.bars.map((b) => b.y + b.height)).toEqual([241, 241]);
+    expect(result.horizontalLines).toEqual([119, 241]);
+    expect(result.axisLabelRight).toBeLessThan(28);
+  });
   it("retains a short bar beside larger values instead of silently omitting it", () => {
     const { pixels, width, height } = image([
       { x: 80, y: 233, w: 30, h: 7 },
@@ -117,6 +186,17 @@ describe("geometry from pixels", () => {
       "widths or overlaps",
     );
   });
+  it("retains muted series so mixed-width grouped bars cannot silently disappear", () => {
+    const { pixels, width, height } = image([
+      { x: 70, y: 100, w: 30, h: 140, color: [97, 124, 168] },
+      { x: 110, y: 142, w: 18, h: 98, color: [131, 164, 138] },
+      { x: 180, y: 60, w: 30, h: 180, color: [97, 124, 168] },
+      { x: 220, y: 114, w: 18, h: 126, color: [131, 164, 138] },
+    ]);
+    expect(() => detectGeometry(pixels, width, height)).toThrow(
+      "widths or overlaps",
+    );
+  });
   it("rejects separated stacked segments", () => {
     const { pixels, width, height } = image([
       { x: 70, y: 160, w: 30, h: 80 },
@@ -132,7 +212,7 @@ describe("geometry from pixels", () => {
       { x: 70, y: 80, w: 30, h: 70, color: [210, 110, 60] },
     ]);
     expect(() => detectGeometry(pixels, width, height)).toThrow(
-      "Multiple fills",
+      /Stacked bars|Multiple fills/,
     );
   });
 });
@@ -168,6 +248,13 @@ describe("OCR crop evidence merging", () => {
     expect(
       mergeOcrWords([word("18", 100, 100)], [word("18", 200, 100)]),
     ).toHaveLength(2);
+  });
+  it("removes all weaker overlaps when a retry joins a multiword category", () => {
+    const merged = mergeOcrWords(
+      [word("Period", 100, 100, 50, 64), word("4", 155, 100, 10, 0)],
+      [word("Period4", 100, 100, 65, 96)],
+    );
+    expect(merged.map((w) => w.text)).toEqual(["Period4"]);
   });
 });
 describe("calibration and evidence", () => {

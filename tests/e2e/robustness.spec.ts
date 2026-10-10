@@ -13,6 +13,7 @@ async function fixture(
     | "two-ticks"
     | "percent"
     | "tick-marks"
+    | "decorated"
     | "short" = "plain",
   mime = "image/png",
 ) {
@@ -24,34 +25,77 @@ async function fixture(
       const g = c.getContext("2d")!;
       g.fillStyle = "#fff";
       g.fillRect(0, 0, c.width, c.height);
+      if (mode === "decorated") {
+        g.fillStyle = "#c1e1f4";
+        g.fillRect(0, 0, c.width, c.height);
+        g.fillStyle = "#d9effc";
+        g.beginPath();
+        g.moveTo(0, 130);
+        g.bezierCurveTo(350, 460, 500, -80, 1100, 240);
+        g.lineTo(1100, 700);
+        g.lineTo(0, 700);
+        g.fill();
+        g.strokeStyle = "#183c4c";
+        g.lineWidth = 4;
+        g.beginPath();
+        g.moveTo(140, 130);
+        g.lineTo(140, 560);
+        g.lineTo(1050, 560);
+        g.stroke();
+      }
       g.fillStyle = "#272a3c";
       g.font = "bold 32px Arial";
       g.fillText("Independent test chart", 50, 60);
-      const ys = mode === "two-ticks" ? [180, 560] : [180, 275, 370, 465, 560];
-      const ticks =
-        mode === "log"
-          ? [10000, 1000, 100, 10, 1]
+      const ys =
+        mode === "decorated"
+          ? [180, 256, 332, 408, 484, 560]
           : mode === "two-ticks"
-            ? [80, 0]
-            : [80, 60, 40, 20, 0];
+            ? [180, 560]
+            : [180, 275, 370, 465, 560];
+      const ticks =
+        mode === "decorated"
+          ? [60, 48, 36, 24, 12, 0]
+          : mode === "log"
+            ? [10000, 1000, 100, 10, 1]
+            : mode === "two-ticks"
+              ? [80, 0]
+              : [80, 60, 40, 20, 0];
       g.font = "24px Arial";
       g.textAlign = "right";
       ys.forEach((y, i) => {
-        g.strokeStyle = "#d6dae2";
-        g.lineWidth = 1;
+        g.strokeStyle = mode === "decorated" ? "#183c4c" : "#d6dae2";
+        g.lineWidth = mode === "decorated" ? 3 : 1;
         g.beginPath();
-        g.moveTo(140, y);
-        g.lineTo(mode === "tick-marks" ? 147 : 1030, y);
+        g.moveTo(mode === "decorated" ? 130 : 140, y);
+        g.lineTo(mode === "tick-marks" || mode === "decorated" ? 147 : 1030, y);
         g.stroke();
         g.fillStyle = "#485366";
         g.fillText(`${ticks[i]}${mode === "percent" ? "%" : ""}`, 120, y + 8);
       });
-      const values = mode === "short" ? [2, 52, 40] : [28, 52, 40],
-        labels = ["Cedar", "Birch", "Maple"];
+      const values =
+          mode === "decorated"
+            ? [12, 36, 24, 48, 36]
+            : mode === "short"
+              ? [2, 52, 40]
+              : [28, 52, 40],
+        labels = ["Cedar", "Birch", "Maple", "Pine", "Willow"];
       values.forEach((v, i) => {
-        const x = 245 + i * 275,
-          h = (v / 80) * 380;
+        const x = mode === "decorated" ? 220 + i * 170 : 245 + i * 275,
+          h = (v / (mode === "decorated" ? 60 : 80)) * 380;
         g.fillStyle = "#617ca8";
+        if (mode === "decorated") {
+          const shades = [
+            ["#6684e3", "#294293"],
+            ["#4e68ca", "#253b83"],
+            ["#b2609b", "#753b66"],
+            ["#3d9b80", "#235f4f"],
+            ["#c77d3e", "#854f26"],
+          ];
+          const gradient = g.createLinearGradient(x, 560 - h, x, 560);
+          gradient.addColorStop(0, shades[i][0]);
+          gradient.addColorStop(1, shades[i][1]);
+          g.fillStyle = gradient;
+        }
         g.fillRect(x, 560 - h, 100, h);
         if (mode === "stacked") {
           g.fillStyle = "#d79a63";
@@ -106,6 +150,37 @@ test("independent unlabelled JPEG uses geometric estimates, not sample metadata"
   await expect(
     page.getByRole("heading", { name: "A zero baseline is supported" }),
   ).toBeVisible();
+});
+test("shaded multicolour bars on a decorated pale background retain a verified zero baseline", async ({
+  page,
+}) => {
+  await page.goto("./");
+  const pixels = await fixture(page, "decorated");
+  await page.getByLabel("Upload chart image").setInputFiles({
+    name: "decorated.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(pixels, "base64"),
+  });
+  await expect(
+    page.getByRole("button", { name: "Confirm values", exact: true }),
+  ).toBeVisible();
+  for (const [i, value] of [12, 36, 24, 48, 36].entries())
+    expect(
+      Math.abs(
+        Number(
+          await page
+            .getByRole("spinbutton", { name: `Value ${i + 1}`, exact: true })
+            .inputValue(),
+        ) - value,
+      ),
+    ).toBeLessThan(0.5);
+  await expect(page.locator(".certainty.estimate")).toHaveCount(5);
+  await expect(
+    page.getByRole("heading", { name: "A zero baseline is supported" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "The vertical axis starts above zero" }),
+  ).toHaveCount(0);
 });
 test("percentage labels retain their unit in the reconstructed chart", async ({
   page,

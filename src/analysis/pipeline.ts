@@ -170,7 +170,10 @@ export async function analyze(
     stage: "geometry",
     detail: "Finding solid bars and a shared baseline…",
   });
-  const { bars, horizontalLines } = await geometry(canvas, signal);
+  const { bars, horizontalLines, axisLabelRight } = await geometry(
+    canvas,
+    signal,
+  );
   if (signal.aborted) throw new DOMException("Cancelled", "AbortError");
   onProgress({ stage: "ocr", detail: "Loading the local English OCR model…" });
   const base = new URL(`${import.meta.env.BASE_URL}ocr/`, window.location.href)
@@ -236,25 +239,33 @@ export async function analyze(
         top = Math.max(0, Math.floor(y));
       const w = Math.min(Math.ceil(width), canvas.width - left),
         h = Math.min(Math.ceil(height), canvas.height - top);
-      const crop = document.createElement("canvas");
-      const cropScale = typicalTextHeight < 18 ? 2 : 1;
-      crop.width = (w + 24) * cropScale;
-      crop.height = (h + 24) * cropScale;
-      const ctx = crop.getContext("2d")!;
-      ctx.scale(cropScale, cropScale);
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, crop.width, crop.height);
-      ctx.drawImage(canvas, left, top, w, h, 12, 12, w, h);
-      const result = await guarded(
-        worker!.recognize(crop, {}, { blocks: true, text: true }),
-        signal,
-        cancel,
-      );
-      return readWords(result.data, left - 12, top - 12, cropScale).filter(
-        (w) =>
-          w.confidence >= (numericOnly ? 70 : 35) &&
-          (!numericOnly || parseNumeric(w.text) !== null),
-      );
+      const recognizeCrop = async (cropScale: number) => {
+        const crop = document.createElement("canvas");
+        crop.width = (w + 24) * cropScale;
+        crop.height = (h + 24) * cropScale;
+        const ctx = crop.getContext("2d")!;
+        ctx.scale(cropScale, cropScale);
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, crop.width, crop.height);
+        ctx.drawImage(canvas, left, top, w, h, 12, 12, w, h);
+        const result = await guarded(
+          worker!.recognize(crop, {}, { blocks: true, text: true }),
+          signal,
+          cancel,
+        );
+        return readWords(result.data, left - 12, top - 12, cropScale).filter(
+          (word) =>
+            word.confidence >= (numericOnly ? 70 : 35) &&
+            (!numericOnly || parseNumeric(word.text) !== null),
+        );
+      };
+      const cropScale = !numericOnly || typicalTextHeight < 18 ? 2 : 1;
+      const result = await recognizeCrop(cropScale);
+      // A lone tick glyph can fail at native size even when larger numbers
+      // read clearly. Retry the same pixels enlarged, keeping the threshold.
+      return numericOnly && result.length === 0 && cropScale === 1
+        ? recognizeCrop(2)
+        : result;
     };
     // Gridlines locate missing tick crops, but never supply a value. Only OCR supplies numbers.
     if (initialTicks.length >= 2) {
@@ -285,13 +296,21 @@ export async function analyze(
           y <= bottom + 5 && !all.slice(0, i).some((p) => Math.abs(p - y) < 4),
       );
       for (const y of retryPositions) {
-        if (initialTicks.some((t) => Math.abs(t.y - y) < 10)) continue;
+        if (
+          initialTicks.some(
+            (t) =>
+              Math.abs(t.y - y) < 10 &&
+              (axisLabelRight === undefined ||
+                t.box.x + t.box.width <= axisLabelRight),
+          )
+        )
+          continue;
         words = mergeOcrWords(
           words,
           await cropWords(
             left,
             y - halfHeight,
-            right - left + 8,
+            Math.min(right + 8, axisLabelRight ?? Infinity) - left,
             halfHeight * 2,
           ),
         );
@@ -322,13 +341,17 @@ export async function analyze(
     const baselineY = Math.max(...bars.map((b) => b.y + b.height));
     for (const bar of bars) {
       const center = bar.x + bar.width / 2;
-      const hasLabel = words.some(
+      const labelWords = words.filter(
         (w) =>
           w.box.y > baselineY + 4 &&
           w.box.y < baselineY + 65 &&
-          w.confidence >= 80 &&
           Math.abs(w.box.x + w.box.width / 2 - center) < bar.width * 0.9,
       );
+      const hasLabel =
+        labelWords.length > 0 &&
+        labelWords.every(
+          (w) => w.confidence >= 80 && /[\p{L}\p{N}]/u.test(w.text),
+        );
       if (!hasLabel)
         words = mergeOcrWords(
           words,

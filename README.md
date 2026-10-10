@@ -40,9 +40,9 @@ The static `dist/` directory contains everything required at runtime, including 
 
 ## Actual automatic scope
 
-- 2–16 solid, flat, separated **vertical bars**, one series, nonnegative values, light background and readable English text.
+- 2–16 solid **vertical bars**, one series, nonnegative values, light background and readable English text. Smooth shading and pale background decoration are supported in the tested fixtures.
 - A linear y-axis with at least **three** readable numeric ticks reaching close to the baseline; supported numeric forms include percentages, currency symbols, decimals and K/M/B suffixes.
-- Clearly identifiable bars of similar width and a common lower edge. Thin outlines, textures, gradients and axes connected to dark fills can be rejected.
+- Clearly identifiable bars of similar width and a common lower edge. Thin outlines, strong textures, low contrast and ambiguous axis connections can still be rejected.
 - Raster images under 10 MB, 100 × 100 pixels or larger, at most 20 megapixels. Images are normalized to a maximum 1500-pixel edge for analysis.
 
 Line, pie, horizontal, stacked, grouped, 3D, log-scale, negative-value and ambiguous charts are outside scope. Structural checks reject the tested unsupported examples, but this is a heuristic detector, **not a universal chart-type classifier**. Some unusual charts can resemble supported geometry. Always inspect the source, evidence and table. When evidence is insufficient, the app explains why and offers explicitly labeled manual reconstruction; it does not invent an extraction or issue a scale verdict.
@@ -69,7 +69,7 @@ npm run gauntlet
 
 The Playwright suite uses installed Google Chrome locally and bundled Chromium in CI. For a machine without Chrome, install it or remove the `channel` setting in `playwright.config.ts` and run `npx playwright install chromium`. Run `npm ci` with development dependencies to get test tooling. Tests launch an isolated server on port 5191 and fail if it is occupied. To test an already served production build, set `CHARTTRUTH_TEST_URL` to its complete application URL, including any subdirectory and a trailing slash.
 
-Tests execute real browser OCR, rather than mocking extracted results. Coverage includes all three samples, independent JPEG and percentage fixtures, unsupported geometries/scales, upload/drop/paste, cancellation/restart, manual corrections, review invalidation, export bytes, responsive widths and automated accessibility checks. Artifacts go to `output/playwright/`; failed checks retain traces in `test-results/`.
+Tests execute real browser OCR, rather than mocking extracted results. Coverage includes all three samples, independent JPEG, percentage and shaded-bar fixtures, unsupported geometries/scales, upload/drop/paste, cancellation/restart, manual corrections, review invalidation, export bytes, responsive widths and automated accessibility checks. Artifacts go to `output/playwright/`; failed checks retain traces in `test-results/`.
 
 See [Verification](docs/VERIFICATION.md) for the measured boundary.
 
@@ -82,7 +82,7 @@ The follow-up external stress test tried **20 real Misviz charts: 1 numerical re
 - [AI disclosure](docs/AI_DISCLOSURE.md).
 - [Dependency/model attributions](THIRD_PARTY_NOTICES.md).
 
-All original application code, tests, documentation and synthetic charts were created on **10 October 2026**, during the published hacking period. Existing research repositories in the parent workspace are references and are **not part of this repository**. No competitor application code or reference artwork is included.
+All original application code, tests, documentation and synthetic charts were created on **10–11 October 2026**, during the published hacking period. Existing research repositories in the parent workspace are references and are **not part of this repository**. No competitor application code or reference artwork is included.
 
 ## License
 

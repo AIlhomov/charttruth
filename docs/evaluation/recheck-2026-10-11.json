@@ -1,0 +1,200 @@
+{
+  "date": "2026-10-11",
+  "protocol": "Same 20 images and hashes in manifest.json; actual browser uploads and JSON exports after shaded-bar reliability changes.",
+  "completed": 1,
+  "rejected": 19,
+  "errors": 0,
+  "limitation": "Exploratory regression recheck, not held-out accuracy. Case 13 informed implementation fixes. Category labels still require manual correction.",
+  "cases": [
+    {
+      "number": 1,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "Multiple fills with abrupt colour changes were found inside the bars. Stacked or strongly patterned bars are outside automatic scope; use manual entry."
+    },
+    {
+      "number": 2,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually."
+    },
+    {
+      "number": 3,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually."
+    },
+    {
+      "number": 4,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "Category labels could not be matched to individual bars. This may be a grouped chart or an unreadable crop. Use manual entry rather than an uncertain reconstruction."
+    },
+    {
+      "number": 5,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "A shared baseline for 2\u00e2\u20ac\u201c16 bars could not be established. Crop to one single-series vertical bar chart, or enter values manually."
+    },
+    {
+      "number": 6,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "Bar geometry is ambiguous: widths or overlaps do not match a standard single-series chart. Enter values manually instead."
+    },
+    {
+      "number": 7,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually."
+    },
+    {
+      "number": 8,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "Fewer than three readable y-axis ticks were found. A linear scale cannot be verified. Try a sharper crop or enter values manually."
+    },
+    {
+      "number": 9,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "The axis ticks do not support a consistent linear scale. Logarithmic, inverted or irregular axes are unsupported; OCR errors can also cause this. No scale finding has been issued."
+    },
+    {
+      "number": 10,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually."
+    },
+    {
+      "number": 11,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "Fewer than three readable y-axis ticks were found. A linear scale cannot be verified. Try a sharper crop or enter values manually."
+    },
+    {
+      "number": 12,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "Use an image at least 100 \u00c3\u2014 100 pixels and below 20 megapixels."
+    },
+    {
+      "number": 13,
+      "status": "completed",
+      "automatic_finding_count": 3,
+      "extracted": [
+        {
+          "label": "NEY",
+          "value": 2,
+          "source": "printed",
+          "labelConfidence": 44,
+          "uncertainty": 0.22438794114930574
+        },
+        {
+          "label": "war",
+          "value": 5,
+          "source": "printed",
+          "labelConfidence": 29,
+          "uncertainty": 0.22438794114930574
+        },
+        {
+          "label": "Bar 3",
+          "value": 14,
+          "source": "printed",
+          "labelConfidence": null,
+          "uncertainty": 0.22438794114930574
+        },
+        {
+          "label": "Wy",
+          "value": 17.83,
+          "source": "geometry",
+          "labelConfidence": 75,
+          "uncertainty": 0.22438794114930574
+        },
+        {
+          "label": "x",
+          "value": 4.03,
+          "source": "geometry",
+          "labelConfidence": 50,
+          "uncertainty": 0.22438794114930574
+        },
+        {
+          "label": "eo\" 2 2",
+          "value": 8.06,
+          "source": "geometry",
+          "labelConfidence": 30,
+          "uncertainty": 0.22438794114930574
+        },
+        {
+          "label": "so",
+          "value": 7,
+          "source": "printed",
+          "labelConfidence": 46,
+          "uncertainty": 0.22438794114930574
+        },
+        {
+          "label": "pot",
+          "value": 10,
+          "source": "printed",
+          "labelConfidence": 53,
+          "uncertainty": 0.22438794114930574
+        }
+      ],
+      "reference_values": [
+        2,
+        5,
+        14,
+        18,
+        4,
+        8,
+        7,
+        10
+      ],
+      "max_absolute_value_error": 0.1700000000000017,
+      "values_within_0_5": 8,
+      "category_labels_require_manual_correction": true
+    },
+    {
+      "number": 14,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "Stacked bars may be present. Automatic extraction is limited to single-series vertical bars. Use manual entry for this chart."
+    },
+    {
+      "number": 15,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually."
+    },
+    {
+      "number": 16,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually."
+    },
+    {
+      "number": 17,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "Some category text has no detected bar. Very short or zero-height bars may be missing. Use manual entry to avoid an incomplete reconstruction."
+    },
+    {
+      "number": 18,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "The axis ticks do not support a consistent linear scale. Logarithmic, inverted or irregular axes are unsupported; OCR errors can also cause this. No scale finding has been issued."
+    },
+    {
+      "number": 19,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually."
+    },
+    {
+      "number": 20,
+      "status": "rejected",
+      "automatic_finding_count": 0,
+      "reason": "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually."
+    }
+  ]
+}

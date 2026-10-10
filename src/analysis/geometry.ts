@@ -10,6 +10,8 @@ export function detectGeometry(
     throw new Error("Invalid image pixels.");
   const count = width * height;
   const mask = new Uint8Array(count);
+  const hue = new Float32Array(count);
+  const chromatic = new Uint8Array(count);
   const rowLines = new Uint32Array(height);
   for (let i = 0; i < count; i++) {
     const p = i * 4;
@@ -18,12 +20,25 @@ export function detectGeometry(
       b = pixels[p + 2];
     const maximum = Math.max(r, g, b),
       minimum = Math.min(r, g, b);
-    // Keep solid coloured and dark neutral fills. Pale gridlines and white paper stay out.
-    if (
-      pixels[p + 3] > 160 &&
-      ((maximum - minimum > 28 && minimum < 225) || maximum < 155)
-    )
+    const delta = maximum - minimum;
+    // Relative saturation excludes pale tinted paper, while retaining shaded
+    // coloured bars. Hue-aware components keep bars apart from touching axes.
+    const colored =
+      delta > 12 &&
+      (delta / Math.max(1, maximum) > 0.3 || (maximum < 205 && minimum < 150));
+    if (pixels[p + 3] > 160 && ((colored && minimum < 205) || maximum < 155)) {
       mask[i] = 1;
+      if (colored) {
+        chromatic[i] = 1;
+        let angle =
+          maximum === r
+            ? (g - b) / delta
+            : maximum === g
+              ? (b - r) / delta + 2
+              : (r - g) / delta + 4;
+        hue[i] = (angle * 60 + 360) % 360;
+      }
+    }
     if (maximum - minimum < 24 && maximum < 245 && minimum > 145)
       rowLines[Math.floor(i / width)]++;
   }
@@ -56,6 +71,14 @@ export function detectGeometry(
       sumB += pixels[i * 4 + 2];
       const visit = (next: number) => {
         if (mask[next] === 1) {
+          if (chromatic[next] !== chromatic[seed]) return;
+          if (chromatic[seed]) {
+            const difference = Math.abs(hue[next] - hue[seed]);
+            if (Math.min(difference, 360 - difference) > 18) return;
+          } else {
+            // Separate dark ink from lighter gray bars when they touch.
+            if (Math.abs(pixels[next * 4] - pixels[seed * 4]) > 50) return;
+          }
           mask[next] = 2;
           stack[length++] = next;
         }
@@ -88,7 +111,7 @@ export function detectGeometry(
   }
   if (candidates.length < 2)
     throw new Error(
-      "We could not find a set of solid vertical bars. Try a flat, single-series bar chart on a light background. Line, pie, stacked and 3D charts need manual entry.",
+      "We could not reliably isolate solid vertical bars in this image. Low contrast, textured backgrounds or connected shapes can prevent detection. Try a tighter crop of a single-series vertical bar chart, or enter values manually.",
     );
   // A shared lower edge is necessary for a quantitative vertical bar series.
   const tolerance = Math.max(3, height * 0.009);
@@ -135,28 +158,41 @@ export function detectGeometry(
       "Stacked bars may be present. Automatic extraction is limited to single-series vertical bars. Use manual entry for this chart.",
     );
   }
-  // Touching coloured stacks can form one rectangular component. Their interior colours reveal the ambiguity.
+  // Abrupt interior colour steps indicate stacks. Smooth shading can change
+  // brightness substantially across a bar without introducing a segment break.
   for (const bar of bars) {
     const centerX = Math.floor(bar.x + bar.width / 2);
     const samples: number[][] = [];
+    const inset = Math.min(
+      Math.max(3, bar.height * 0.02),
+      Math.floor((bar.height - 1) / 3),
+    );
     for (let fraction = 0.15; fraction < 0.95; fraction += 0.15) {
-      const p =
-        (Math.floor(bar.y + bar.height * fraction) * width + centerX) * 4;
+      const sampleY = Math.floor(
+        Math.max(
+          bar.y + inset,
+          Math.min(
+            bar.y + bar.height - 1 - inset,
+            bar.y + bar.height * fraction,
+          ),
+        ),
+      );
+      const p = (sampleY * width + centerX) * 4;
       samples.push([pixels[p], pixels[p + 1], pixels[p + 2]]);
     }
     if (
-      samples.some((a) =>
-        samples.some(
-          (b) =>
-            Math.abs(a[0] - b[0]) +
-              Math.abs(a[1] - b[1]) +
-              Math.abs(a[2] - b[2]) >
-            100,
-        ),
+      samples.some(
+        (a, index) =>
+          index > 0 &&
+          a.reduce(
+            (sum, channel, c) =>
+              sum + Math.abs(channel - samples[index - 1][c]),
+            0,
+          ) > 70,
       )
     ) {
       throw new Error(
-        "Multiple fills or gradients were found inside the bars. Stacked, patterned and gradient bars are outside automatic scope; use manual entry.",
+        "Multiple fills with abrupt colour changes were found inside the bars. Stacked or strongly patterned bars are outside automatic scope; use manual entry.",
       );
     }
   }
@@ -169,5 +205,105 @@ export function detectGeometry(
     )
       horizontalLines.push(y);
   }
-  return { bars, horizontalLines };
+  // A long dark vertical spine can locate short tick marks even when there
+  // are no full-width gridlines. Their pixels anchor OCR boxes, not values.
+  const leftBar = Math.min(...bars.map((b) => b.x));
+  const bottom = Math.max(...bars.map((b) => b.y + b.height));
+  const top = Math.min(...bars.map((b) => b.y));
+  const ink = (x: number, y: number) => {
+    const p = (y * width + x) * 4;
+    return Math.max(pixels[p], pixels[p + 1], pixels[p + 2]) < 140;
+  };
+  const spineColumns: number[] = [];
+  let axisLabelRight: number | undefined;
+  for (
+    let x = Math.max(0, Math.floor(leftBar - medianWidth * 4));
+    x < leftBar - medianWidth * 0.3;
+    x++
+  ) {
+    let dark = 0;
+    for (let y = top; y < bottom; y++) if (ink(x, y)) dark++;
+    if (dark >= (bottom - top) * 0.85) spineColumns.push(x);
+  }
+  if (spineColumns.length) {
+    let axisLeft = spineColumns[spineColumns.length - 1];
+    for (
+      let i = spineColumns.length - 2;
+      i >= 0 && axisLeft - spineColumns[i] <= 2;
+      i--
+    )
+      axisLeft = spineColumns[i];
+    const reach = Math.max(5, Math.min(30, medianWidth * 0.3));
+    const tickLengths: number[] = [];
+    const tickRows: {
+      first: number;
+      last: number;
+      sum: number;
+      weight: number;
+    }[] = [];
+    for (
+      let y = Math.max(0, Math.floor(top - height * 0.2));
+      y < Math.min(height, bottom + 5);
+      y++
+    ) {
+      // Tick ink must connect to the spine. Nearby number glyphs are not ticks.
+      let dark = 0;
+      for (
+        let x = axisLeft - 3;
+        x >= Math.max(0, Math.floor(axisLeft - reach));
+        x--
+      ) {
+        if (!ink(x, y)) break;
+        dark++;
+      }
+      if (dark < 4) continue;
+      tickLengths.push(dark + 2);
+      const previous = tickRows[tickRows.length - 1];
+      if (previous && y - previous.last <= 2) {
+        previous.last = y;
+        previous.sum += y * dark;
+        previous.weight += dark;
+      } else tickRows.push({ first: y, last: y, sum: y * dark, weight: dark });
+    }
+    for (const row of tickRows)
+      if (row.last - row.first < Math.max(8, height * 0.015))
+        horizontalLines.push(Math.round(row.sum / row.weight));
+    if (tickLengths.length) {
+      tickLengths.sort((a, b) => a - b);
+      axisLabelRight =
+        axisLeft - tickLengths[Math.floor(tickLengths.length / 2)] - 3;
+    }
+    // An x-axis need not extend left of the spine like the other tick marks.
+    // Anchor a baseline label only if a continuous dark row is actually visible.
+    const axisRight = Math.max(...bars.map((b) => b.x + b.width));
+    const baselineRows: number[] = [];
+    for (
+      let y = Math.max(0, bottom - 4);
+      y < Math.min(height, bottom + 5);
+      y++
+    ) {
+      let dark = 0;
+      for (let x = axisLeft; x < axisRight; x++) if (ink(x, y)) dark++;
+      if (dark > (axisRight - axisLeft) * 0.9) baselineRows.push(y);
+    }
+    if (baselineRows.length) {
+      const baseline = Math.round(
+        baselineRows.reduce((a, y) => a + y, 0) / baselineRows.length,
+      );
+      horizontalLines.push(baseline);
+      // Thick axis ink can cover the final bar pixels. Use its measured centre
+      // as the shared lower edge rather than interpreting the stroke as data.
+      for (const bar of bars)
+        if (Math.abs(bar.y + bar.height - baseline) <= tolerance)
+          bar.height = baseline - bar.y;
+    }
+  }
+  horizontalLines.sort((a, b) => a - b);
+  return {
+    bars,
+    axisLabelRight,
+    horizontalLines: horizontalLines.filter(
+      (y, i, all) => i === 0 || y - all[i - 1] > 3,
+    ),
+  };
 }
