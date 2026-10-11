@@ -1,8 +1,12 @@
 {
   "url": "https://ailhomov.github.io/charttruth/",
+  "testedSourceCommit": "8b3335fba6a4d002356fd43aca084263dc264407",
+  "date": "2026-10-11",
+  "startTime": "2026-10-10T23:58:43.476Z",
+  "durationMs": 37085.477999999996,
   "stats": {
-    "total": 15,
-    "expected": 15,
+    "total": 16,
+    "expected": 16,
     "unexpected": 0,
     "flaky": 0,
     "skipped": 0,
@@ -11,5 +15,5 @@
   "metadata": {
     "actualWorkers": 1
   },
-  "source": "Hosted Playwright run with CHARTTRUTH_TEST_URL; extracted from the actual HTML report."
+  "source": "Hosted Playwright run with CHARTTRUTH_TEST_URL; extracted from the actual JSON reporter output."
 }

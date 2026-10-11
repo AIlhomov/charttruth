@@ -2,6 +2,8 @@
 
 **20 real external charts; 1 numerical reconstruction, 19 rejections.** The reconstructed chart needs manual label correction. This is limited coverage, not a 100% accuracy result.
 
+The [11 October reliability recheck](recheck-2026-10-11.json), after shaded-bar and tick-OCR changes, retained one numerical reconstruction and nineteen rejections with no runtime errors. Case 13 still needs manual category correction; all eight numerical values remain within 0.5 source units of the recorded manual reference.
+
 Selected before analysis from [Misviz](https://github.com/UKPLab/acl2026-misviz) by the deterministic protocol in [manifest.json](manifest.json). Original source URLs, byte hashes, dimensions and dataset annotations are retained. No external images are committed or added to the sample gallery.
 
 The first run rejected all 20. Investigation of case 13 exposed a lost short bar, missing dense-axis baseline text, and small-text OCR errors. The follow-up adds shorter-component detection, spatial category-coverage checks, adaptive tick crops and confidence-based OCR retry merging. The same case was used during those fixes, so these are **exploratory post-fix results**, not held-out performance.
